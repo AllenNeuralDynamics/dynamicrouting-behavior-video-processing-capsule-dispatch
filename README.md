@@ -1,3 +1,7 @@
-# aind-capsule-template
+# dynamicrouting behavior video launcher
 
-Basic structure of a capsule to be customized as needed.
+Triggers:
+ - DLC eye tracking
+ - gamma encoding > LP face parts
+ - facemap
+for one session, from its raw data asset ID.
