@@ -1,0 +1,14 @@
+{
+	"version": 1,
+	"named_parameters": true,
+	"parameters": [
+		{
+			"id": "jF4Z8eyyhCMgTVgG",
+			"name": "raw_data_asset_id",
+			"param_name": "raw_data_asset_id",
+			"type": "text",
+			"value_type": "string",
+			"required": true
+		}
+	]
+}
