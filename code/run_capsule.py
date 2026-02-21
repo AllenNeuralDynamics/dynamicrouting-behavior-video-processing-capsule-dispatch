@@ -5,6 +5,7 @@ import datetime
 import aind_session
 import codeocean.computation
 import codeocean.data_asset
+import npc_lims
 
 argparser = argparse.ArgumentParser(description="Run capsules for a given session raw data asset")
 argparser.add_argument("--raw_data_asset_id", type=str, required=True, help="ID of the raw data asset to process")
@@ -40,10 +41,7 @@ def run_and_capture_result(process_name: str, capsule_id: str, data_asset_ids: l
 
     # wait for capsule to complete:
     computation: codeocean.computation.Computation = client.computations.wait_until_completed(computation, polling_interval=60, timeout=None)
-    if (
-        computation.state == codeocean.computation.ComputationState.Failed
-        or computation.end_status == codeocean.computation.ComputationEndStatus.Failed
-    ):
+    if npc_lims.is_computation_errored(computation):
         raise RuntimeError(f"Capsule {process_name} failed: {computation.id}")
 
     # capture result:
@@ -57,7 +55,7 @@ def run_and_capture_result(process_name: str, capsule_id: str, data_asset_ids: l
     custom_metadata = {
         "data level": "derived data",
         "experiment type": "ecephys",
-        "modality": "behavior videos",
+        "modality": "Extracellular electrophysiology",
         "subject id": subject_id,
     }
     data_asset_params = codeocean.data_asset.DataAssetParams(
@@ -73,6 +71,7 @@ def run_and_capture_result(process_name: str, capsule_id: str, data_asset_ids: l
         f.write(data_asset_params.to_json(indent=4))
     data_asset = client.data_assets.create_data_asset(data_asset_params)
     data_asset = aind_session.wait_until_ready(data_asset.id, timeout=120)
+    npc_lims.set_asset_viewable_for_everyone(data_asset.id)
     return data_asset
 
 def _post_gamma_encoding_callback(future: cf.Future[codeocean.data_asset.DataAsset]) -> None:
@@ -86,7 +85,6 @@ def main() -> None:
         for process_name, capsule_id in CAPSULE_ID.items():
             if process_name == 'lp_face_parts':
                 continue
-            print(f"Submitting {process_name}")
             future = executor.submit(
                 run_and_capture_result, process_name, capsule_id, [raw_data_asset_id]
             )
