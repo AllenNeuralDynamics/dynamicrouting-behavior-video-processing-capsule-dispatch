@@ -70,7 +70,7 @@ def run_and_capture_result(process_name: str, capsule_id: str, data_asset_ids: l
     with open(fname, "w") as f:
         f.write(data_asset_params.to_json(indent=4))
     data_asset = client.data_assets.create_data_asset(data_asset_params)
-    data_asset = aind_session.wait_until_ready(data_asset.id, timeout=120)
+    data_asset = aind_session.wait_until_ready(data_asset.id, timeout=None)
     npc_lims.set_asset_viewable_for_everyone(data_asset.id)
     print(f"Created data asset {process_name}: {data_asset.id}")
     return data_asset
