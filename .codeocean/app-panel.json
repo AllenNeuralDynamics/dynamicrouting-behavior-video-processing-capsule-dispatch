@@ -9,6 +9,26 @@
 			"type": "text",
 			"value_type": "string",
 			"required": true
+		},
+		{
+			"id": "kvaSeSfzIZdzA2RT",
+			"name": "dry_run",
+			"param_name": "dry_run",
+			"type": "text",
+			"value_type": "integer",
+			"default_value": "0",
+			"minimum": 0,
+			"maximum": 1
+		},
+		{
+			"id": "K2PV5GcysT9LPm8k",
+			"name": "skip_existing",
+			"param_name": "skip_existing",
+			"type": "text",
+			"value_type": "integer",
+			"default_value": "0",
+			"minimum": 0,
+			"maximum": 1
 		}
 	]
 }

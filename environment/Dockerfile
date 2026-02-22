@@ -1,4 +1,4 @@
-# hash:sha256:44d2baa26cdb0381bbc52c5d108cd74ca351c5284e312fea4b67b131dfc891f9
+# hash:sha256:da2844e9f43724ed1de8c58a2deafc02150caba84d37c3cdf43618cebf547022
 ARG REGISTRY_HOST
 FROM $REGISTRY_HOST/codeocean/mambaforge3:23.1.0-4-python3.10.12-ubuntu22.04
 
@@ -12,4 +12,4 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 RUN pip3 install -U --no-cache-dir \
-    npc-lims==0.1.191
+    npc-lims[polars]==0.1.191

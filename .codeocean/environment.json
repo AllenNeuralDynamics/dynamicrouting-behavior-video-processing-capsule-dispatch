@@ -19,7 +19,7 @@
 		"pip3": {
 			"packages": [
 				{
-					"name": "npc-lims",
+					"name": "npc-lims[polars]",
 					"version": "0.1.191"
 				}
 			],
