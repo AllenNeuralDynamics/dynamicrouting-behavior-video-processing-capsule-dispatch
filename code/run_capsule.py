@@ -19,7 +19,10 @@ args = argparser.parse_args()
 raw_data_asset_id = args.raw_data_asset_id
 DRY_RUN = args.dry_run
 if args.run_specific_capsule:
-    print("Running specific capsule: will not skip if assets already exist")
+    if args.run_specific_capsule == 'LPFaceParts' and not args.skip_gamma_encoding:
+        print("Running 'gamma_encoding' followed by {args.run_specific_capsule!r}: setting SKIP_EXISTING=False")
+    else:        
+        print(f"Running {args.run_specific_capsule!r} only: setting SKIP_EXISTING=False")
     SKIP_EXISTING = False
 else:
     SKIP_EXISTING = args.skip_existing
@@ -107,7 +110,7 @@ def main() -> None:
         existing_assets = {process_name: get_process_asset_id(process_name) for process_name in CAPSULE_ID.keys()}
         print(f"{SKIP_EXISTING=}, assets already exist for {[k for k,v in existing_assets.items() if v]}")
     else:
-        print(f"{SKIP_EXISTING=}, will run all processes regardless of existing data assets")
+        print(f"{SKIP_EXISTING=}, will create new data assets, ignoring existing assets")
         existing_assets = {}
     with cf.ThreadPoolExecutor() as executor:
         future_to_process_name = {}
