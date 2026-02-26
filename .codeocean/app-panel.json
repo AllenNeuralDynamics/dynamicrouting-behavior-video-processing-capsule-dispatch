@@ -26,7 +26,7 @@
 			"param_name": "skip_existing",
 			"type": "text",
 			"value_type": "integer",
-			"default_value": "0",
+			"default_value": "1",
 			"minimum": 0,
 			"maximum": 1
 		},
@@ -38,6 +38,18 @@
 			"help_text": "Only run one of the names in CAPSULE_ID (sets skip_existing=False)",
 			"type": "text",
 			"value_type": "string"
+		},
+		{
+			"id": "s151PqTROPr7PlLs",
+			"name": "skip_gamma_encoding",
+			"param_name": "skip_gamma_encoding",
+			"description": "If re-running LPFaceParts alone, toggle this to use existing gamma encoding asset",
+			"help_text": "If re-running LPFaceParts alone, toggle this to use existing gamma encoding asset",
+			"type": "text",
+			"value_type": "integer",
+			"default_value": "0",
+			"minimum": 0,
+			"maximum": 1
 		}
 	]
 }
