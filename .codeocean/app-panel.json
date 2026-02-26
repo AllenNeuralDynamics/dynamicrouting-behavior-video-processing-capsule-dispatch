@@ -29,6 +29,15 @@
 			"default_value": "0",
 			"minimum": 0,
 			"maximum": 1
+		},
+		{
+			"id": "Ta1StQq9QzLf8IEB",
+			"name": "run_specific_capsule",
+			"param_name": "run_specific_capsule",
+			"description": "Only run one of the names in CAPSULE_ID (sets skip_existing=False)",
+			"help_text": "Only run one of the names in CAPSULE_ID (sets skip_existing=False)",
+			"type": "text",
+			"value_type": "string"
 		}
 	]
 }

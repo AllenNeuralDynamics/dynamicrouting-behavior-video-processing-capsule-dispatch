@@ -12,10 +12,15 @@ argparser = argparse.ArgumentParser(description="Run capsules for a given sessio
 argparser.add_argument("--raw_data_asset_id", type=str, required=True, help="ID of the raw data asset to process")
 argparser.add_argument("--dry_run", type=int, default=0, help="Set to 1 for dry-run mode (no capsule launch)")
 argparser.add_argument("--skip_existing", type=int, default=0, help="Set to 1 to skip existing data assets")
+argparser.add_argument("--run_specific_capsule", type=str, default=0, help="Only run one of the names in CAPSULE_ID (sets skip_existing=False)")
 args = argparser.parse_args()
 raw_data_asset_id = args.raw_data_asset_id
 DRY_RUN = args.dry_run
-SKIP_EXISTING = args.skip_existing
+if args.run_specific_capsule:
+    print("Running specific capsule: will not skip if assets already exist")
+    SKIP_EXISTING = False
+else:
+    SKIP_EXISTING = args.skip_existing
 
 CAPSULE_ID = {
     'GammaEncoding': 'd8fa238e-1e53-4890-af5e-f1479c1551fc',
@@ -104,7 +109,7 @@ def main() -> None:
     with cf.ThreadPoolExecutor() as executor:
         future_to_process_name = {}
         for process_name, capsule_id in CAPSULE_ID.items():
-            if existing_assets.get(process_name):
+            if SKIP_EXISTING and existing_assets.get(process_name):
                 print(f"\nSkipping {process_name}: asset already exists")
                 continue
             if process_name == 'LPFaceParts' and not (gamma_asset_id := existing_assets.get('GammaEncoding')):
@@ -114,6 +119,11 @@ def main() -> None:
                 data_asset_id = gamma_asset_id
             else:
                 data_asset_id = raw_data_asset_id
+            if args.run_specific_capsule and process_name != args.run_specific_capsule:
+                if args.run_specific_capsule == 'LPFaceParts' and process_name == 'GammaEncoding':
+                    pass # we requested LPFaceParts but GammaEncoding needs to run first
+                else:
+                    continue
             future = executor.submit(
                 run_and_capture_result, process_name, [data_asset_id]
             )
