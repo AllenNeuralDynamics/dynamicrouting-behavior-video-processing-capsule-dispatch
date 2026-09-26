@@ -42,7 +42,7 @@ print(session_id)
 
 def get_process_asset_id(process_name: str) -> str | None:
     try:
-        return npc_lims.get_session_capsule_pipeline_data_asset(session_id, process_name)
+        return npc_lims.get_session_capsule_pipeline_data_asset(session_id, process_name).id
     except FileNotFoundError:
         return None
 
